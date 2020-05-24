@@ -1,0 +1,719 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section>
+					<h1>Type Scritp</h1>
+				</section>
+				<section>
+					<h2>Содержание:</h2>
+					<ol>
+						<li>Введение в Type Script</li>
+						<li>Основы TypeScript</li>
+						<li>ООП</li>
+						<li>Модули и пространства имен</li>
+						<li>Заголовочные файлы</li>
+						<li>Декораторы</li>
+					</ol>
+				</section>
+				<section>
+					<section>
+						<h2>1.Введение в Type Script</h2>
+					</section>
+					<section>
+						<h3>Что такое TypeScript</h3>
+							<p><b>TypeScript</b>  представляет язык программирования на основе JavaScript.</p>
+							<p>Развитие TypeScript началось в конце 2012 года.</p>
+							<p>Создатель - Андерс Хейлсберг, так же известный как создатель таких языков как Delphi, C#.</p>
+							<p><b>TypeScript</b> - это строго типизированный и компилируемый язык.</p>
+					</section>
+					<section>
+						<p>TypeScript реализует многие концепции:</p>
+						<ul>
+							<li>наследование</li>
+							<li>полиморфизм</li>
+							<li>инкапсуляция</li>
+							<li>модификаторы доступа</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Установка и компиляция из командной строки</h3>
+						<pre><code data-trim data-noescape>
+							>npm install -g typescript // Windows & Linux
+							>sudo npm install -g typescript // MacOS
+							>npm update -g typescript // Update
+							>tsc -v // Version
+						</code></pre>
+					</section>
+					<section>
+						<h3>Настройки компиляции</h3>
+						<pre><code data-trim data-noescape>
+							tsc -w app.ts // Автоматическая перекомпиляция
+							tsc app.ts -t ES5 // Версия ECMAScript ("ES3", "ES5", "ES6", "ES2015", "ES2016", "ES2017", "ESNext")
+							tsc app.ts --removeComments // Удаление комментариев
+							tsc --outDir D:\ts\js app.ts // Установка каталога
+							tsc --outFile output.js app.ts hello.ts // Объединение файлов
+							tsc -m commonjs app.ts // Тип модуля
+							tsc -t ES5 --outDir js -m commonjs app.ts // Несколько параметров
+							tsc -h // Вызов справки
+						</code></pre>
+					</section>
+					<section>
+						<h3>Файл конфигурации tsconfig.json</h3>
+						<ul>
+							<li>устанавливает корневой каталог проекта TypeScript</li>
+							<li>выполняет настройку параметров компиляции</li>
+							<li>устанавливает файлы проекта</li>
+						</ul>
+						<pre><code data-trim data-noescape>
+							{
+								"compilerOptions": {
+									"target": "es5",
+									"removeComments": true,
+									"outDir": "js",
+									"sourceMap": true
+									"outFile": "main.js"
+								}
+							}
+						</code></pre>
+					</section>
+					<section>
+						<p>С помощью секции files можно установить набор включаемых в проект файлов:</p>
+						<pre><code data-trim data-noescape>
+							{
+								"compilerOptions": {
+									"target": "es5",
+									"removeComments": true,
+									"outFile": "../../built/local/tsc.js"
+								},
+								"files":[
+									"app.ts",
+									"interfaces.ts",
+									"classes.ts",
+								]
+							}
+						</code></pre>
+						<p>Если секция "files" не указана в файле tsconfig.json, то компилятор по умолчанию включает все файлы TypeScript</p>
+					</section>
+					<section>
+						<p>Параметр exclude, наоборот, позволяет исключить при компиляции определенные файлы:</p>
+						<pre><code data-trim data-noescape>
+							{
+								"compilerOptions": {
+									"target": "es5",
+									"removeComments": true,
+									"outFile": "../../built/local/tsc.js"
+								},
+								"exclude":[
+									"wwwroot",
+									"node_modules"
+								]
+							}
+						</code></pre>
+						<p>Если в файле одновременно будут заданы обе секции files и exclude, то секция exclude будет игнорироваться.</p>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>2.Основы TypeScript</h2>
+					</section>
+					<section>
+						<p>Переменные и константы</p>
+						<pre><code data-trim data-noescape>
+							var x = "hello";
+							console.log(x);
+							var x = "work";
+							console.log(x);
+						</code></pre>
+						<p></p>
+						<pre><code data-trim data-noescape>
+							let x = "hello";
+							console.log(x);
+							let x = "work"; // здесь будет ошибка, так как переменная x уже объявлена
+							console.log(x);
+						</code></pre>
+						<p></p>
+						<pre><code data-trim data-noescape>
+							const z = 6;
+							z = 8;  // здесь ошибка - нельзя изменить значение константы z
+						</code></pre>
+					</section>
+					<section>
+						<h3>Типы данных</h3>
+						<p>Boolean</p>
+						<pre><code data-trim data-noescape>
+							let isEnabled = true;
+							let isAlive: boolean = false;
+						</code></pre>
+						<p>Number</p>
+						<pre><code data-trim data-noescape>
+							let decimal: number = 6;
+							let hex: number = 0xf00d;
+							let binary: number = 0b1010;
+							let octal: number = 0o744;
+						</code></pre>
+						<p>String</p>
+						<pre><code data-trim data-noescape>
+							let firstName: string = "Tom";
+							let age: number = 28;
+							let info: string = `Имя ${firstName}    Возраст: ${age}`;
+							console.log(info);  // Имя Tom    Возраст: 28
+						</code></pre>
+					</section>
+					<section>
+						<p>Null и undefined</p>
+						<pre><code data-trim data-noescape>
+							let a: undefined = undefined;
+							let b: null = null;
+						</code></pre>
+						<p>Массивы</p>
+						<pre><code data-trim data-noescape>
+						let list: number[] = [10, 20, 30];
+						let colors: string[] = ["red", "green", "blue"];
+						console.log(list[0]);
+						console.log(colors[1]);
+						let names: Array<string> = ["Tom", "Bob", "Alice"];
+						console.log(names[1]);  // Bob
+						</code></pre>
+					</section>
+					<section>
+						<p>Кортежи</p>
+						<pre><code data-trim data-noescape>
+							// определение кортежа - кортеж состоит из двух элементов - строки и числа
+							let userInfo: [string, number];
+							// инициализация кортежа
+							userInfo = ["Tom", 28];
+							// Неправильная инициализация - переданные значения не соответствуют типам по позиции
+							//userInfo = [28, "Tom"]; // Ошибка
+							// использование кортежа
+							console.log(userInfo[1]); // 28
+							userInfo[1] = 37;
+						</code></pre>
+						<p>Тип enum</p>
+						<pre><code data-trim data-noescape>
+							enum Season { Winter, Spring, Summer, Autumn };
+							let current: Season = Season.Summer;
+							console.log(current);
+							current = Season.Autumn; // изменение значения
+						</code></pre>
+						<p></p>
+						<pre><code data-trim data-noescape>
+							enum Season { Winter=0, Spring=1, Summer=2, Autumn=3 };
+							var current: string = Season[2];  // 2 - числовое значение Summer
+							console.log(current);   // Summer
+						</code></pre>
+					</section>
+					<section>
+						<p>Тип any</p>
+						<pre><code data-trim data-noescape>
+							let someVar: any = "hello";
+							console.log(someVar);   // сейчас someVar - это string
+							someVar = 20; 
+							console.log(someVar);   // сейчас someVar - это number
+						</code></pre>
+						<p></p>
+						<pre><code data-trim data-noescape>
+							var someArray: any[] = [ 24, "Tom", false];
+						</code></pre>
+						<p>Комплексные объекты</p>
+						<pre><code data-trim data-noescape>
+							let person = {name:"Tom", age:23};
+							console.log(person.name);
+							// альтернативный вариант получения свойства
+							console.log(person["name"]);
+						</code></pre>
+						<p></p>
+						<pre><code data-trim data-noescape>
+							let person = { name: "Tom", age: 23 };
+							person = { name: "Alice" }; // Ошибка
+						</code></pre>
+						<p>Должно быть соответствие по названиям, количеству и типу свойств.</p>
+					</section>
+					<section>
+						<h3>Работа с типами данных</h3>
+						<p>Объединения</p>
+						<pre><code data-trim data-noescape>
+							let id : number | string;
+							id = "1345dgg5";
+							console.log(id); // 1345dgg5
+							id = 234;
+							console.log(id);  // 234
+						</code></pre>
+						<p>Проверка типа</p>
+						<pre><code data-trim data-noescape>
+							let sum: any;
+							sum = 1200;
+							if (typeof sum === "number") {
+								
+								let result: number = sum / 12;
+								console.log(result);
+							}
+							else{
+								console.log("invalid operation");
+							}
+						</code></pre>
+					</section>
+					<section>
+						<p>Псевдонимы типов</p>
+						<pre><code data-trim data-noescape>
+							type stringOrNumberType = number | string;
+							let sum: stringOrNumberType = 36.6;
+							if (typeof sum === "number") {
+								console.log(sum / 6);
+							}
+						</code></pre>
+					</section>
+					<section>
+						<p>Type assertion</p>
+						<p>Использование угловых скобок:</p>
+						<pre><code data-trim data-noescape>
+							let someAnyValue: any = "hello world!";
+							let strLength: number = (<string>someAnyValue).length;
+							console.log(strLength); // 12
+							
+							let someUnionValue: string | number = "hello work";
+							strLength = (<string>someUnionValue).length;
+							console.log(strLength); // 10
+						</code></pre>
+						<p>Применение оператора as:</p>
+						<pre><code data-trim data-noescape>
+							let someAnyValue: any = "hello world!";
+							let strLength: number = (someAnyValue as string).length;
+							console.log(strLength); // 12
+							
+							let someUnionValue: string | number = "hello work";
+							strLength = (someUnionValue as string).length;
+							console.log(strLength); // 10
+						</code></pre>
+					</section>
+					<section>
+						<h3>Функции</h3>
+						<p>Определение функции</p>
+						<pre><code data-trim data-noescape>
+							function add(a: number, b: number): number {
+								return a + b;
+							}
+							// вызов функции
+							let result1 = add(1, 2);
+							console.log(result1);
+
+							let add = function (a: number, b: number) : number {
+								return a + b;
+							}
+							let result1 = add(1, 2);
+						</code></pre>
+					</section>
+					<section>
+						<p><b>Необязательные параметры</b></p>
+						<p>При вызове в функцию должно передаваться ровно столько значений, сколько в ней определено параметров:</p>
+						<pre><code data-trim data-noescape>
+							function getName(firstName: string, lastName: string) {
+								return firstName + " " + lastName;
+							}
+							 
+							let name1 = getName("Иван", "Кузнецов");
+							let name2 = getName("Иван", "Михайлович", "Кузнецов");  //ошибка, много параметров
+							let name3 = getName("Иван");  //ошибка, мало параметров
+						</code></pre>
+					</section>
+					<section>
+						<p>Необязательные параметры должны быть помечены вопросительным знаком ?.
+							Причем необязательные параметры должны идти после обязательных:</p>
+							<pre><code data-trim data-noescape>
+								function getName(firstName: string, lastName?: string) {
+									if (lastName)
+										return firstName + " " + lastName;
+									else
+										return firstName;
+								}
+								  
+								let name1 = getName("Иван", "Кузнецов");
+								console.log(name1); // Иван Кузнецов
+								let name2 = getName("Вася");
+								console.log(name2); // Вася
+							</code></pre>
+					</section>
+					<section>
+						<p>Неопределенный набор параметров</p>
+						<pre><code data-trim data-noescape>
+							function addNumbers(firstNumber: number, ...numberArray: number[]): number {
+      
+								let result = firstNumber;
+								for (let i = 0; i < numberArray.length; i++) {
+									result+= numberArray[i];
+								}
+								return result;
+							}
+							  
+							let num1 = addNumbers(3, 7, 8);
+							console.log(num1); // 18
+							  
+							let num2 = addNumbers(3, 7, 8, 9, 4);
+							console.log(num2); // 31
+						</code></pre>
+					</section>
+					<section>
+						<p>Перегрузка функций</p>
+						<pre><code data-trim data-noescape>
+							function add(x: string, y: string): string;
+							function add(x: number, y: number): number;
+							function add(x: any, y: any): any {
+								return x + y;
+							}
+							
+							let result1 = add(5, 4);
+							console.log(result1);   // 9
+							let result2 = add("5", "4");
+							console.log(result2);   // 54
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>3.ООП</h2>
+						<p><b>Классы</b></p>
+						<pre><code data-trim data-noescape>
+							class User {
+								id: number;
+								name: string;
+								constructor(userId: number, userName: string) {
+									this.id = userId;
+									this.name = userName;
+								}
+								getInfo(): string {
+									return "id:" + this.id + " name:" + this.name;
+								}
+							}
+							let tom: User = new User(1, "Tom");
+							console.log(tom.getInfo());
+							tom.id = 4;
+							let alice: User = new User(2, "Alice");
+							console.log(alice.getInfo());
+						</code></pre>
+					</section>
+					<section>
+						<p><b>Статические свойства и функции</b></p>
+						<pre><code data-trim data-noescape>
+							class Operation {
+ 
+								static PI: number = 3.14;
+							 
+								static getSquare(radius: number): number {
+							 
+									return Operation.PI * radius * radius;
+								}
+							}
+							let result = Operation.getSquare(30);
+							console.log("Площадь круга с радиусом 30 равна " + result);
+							let result2 = Operation.PI * 30 * 30;
+							console.log(result2);   // 2826
+						</code></pre>
+					</section>
+					<section>
+						<p><b>Модификаторы доступа</b></p>
+						<ul>
+							<li>public</li>
+							<li>protected</li>
+							<li>private</li>
+						</ul>
+					</section>
+					<section>
+						<p><b>Определение свойств через конструктор</b></p>
+						<pre><code data-trim data-noescape>
+							class User {
+ 
+								constructor(private name: string, private age: number) {
+								}
+								public displayInfo(): void {
+							 
+									console.log("name: " + this.name + "; age: " + this.age);
+								}
+							}
+						</code></pre>
+					</section>
+					<section>
+						<h3>Методы доступа и readonly-свойства</h3>
+						<p>get/set</p>
+						<pre><code data-trim data-noescape>
+							class User {
+								private _name: string;
+							 
+								public get name(): string {
+									return this._name;
+								}
+								public set name(n: string) {
+									this._name = n;
+								}
+							}
+							let tom = new User();
+							tom.name = "Tom";   // срабатывает set-метод
+							console.log(tom.name);  // срабатывает get-метод
+						</code></pre>
+					</section>
+					<section>
+						<p><b>readonly</b> - свойства доступны только для чтения:</p>
+						<pre><code data-trim data-noescape>
+							class User {
+								readonly id: number;
+								name: string;
+								constructor(userId: number, userName: string) {
+									this.id = userId;
+									this.name = userName;
+								}
+							}
+							let tom: User = new User(2, "Tom");
+							console.log(tom.id, tom.name);
+							//tom.id=34;    // Ошибка - так как id - только для чтения
+						</code></pre>
+						<p>Можно сократить следующим образом:</p>
+						<pre><code data-trim data-noescape>
+							class User {
+								name: string;
+								constructor(readonly id: number, userName: string) {
+									this.name = userName;
+								}
+							}
+						</code></pre>
+					</section>
+					<section>
+						<h3>Наследование. Абстрактные классы</h3>
+						<p>В TypeScript наследование реализуется с помощью ключевого слова <u>extends</u> (как в Java)</p>
+						<p>С помощью ключевого слова <u>super</u> подкласс может обратиться к функционалу базового класса. </p>
+					</section>
+					<section>
+						<p>Абстрактные классы</p>
+						<pre><code data-trim data-noescape>
+							abstract class Figure {
+								abstract getArea(): void;
+							}
+							class Rectangle extends Figure{
+								constructor(public width: number, public height: number){ 
+									super();
+								}
+								getArea(): void{
+									let square = this.width * this.height;
+									console.log("area =", square);
+								}
+							}
+							let someFigure: Figure = new Rectangle(20, 30)
+							someFigure.getArea();
+						</code></pre>
+					</section>
+					<section>
+						<h3>Интерфейсы</h3>
+						<ul>
+							<li>Интерфейсы объектов</li>
+							<li>Интерфейсы классов</li>
+							<li>Наследование интерфейсов</li>
+							<li>Интерфейсы функций</li>
+							<li>Интерфейсы массивов</li>
+							<li>Гибридные интерфейсы</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Обобщения</h3>
+						<pre><code data-trim data-noescape>
+							function getId<T>(id: T): T {
+								return id;
+							}
+							let result1 = getId<number>(5);
+							console.log(result1);
+							let result2 = getId<string>("abc");
+							console.log(result2);
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>4.Модули и пространства имен</h2>
+					</section>
+					<section>
+						<h3>Пространства имен</h3>
+						<p>Для определения пространств имен используется ключевое слово <u>namespace</u>:</p>
+						<pre><code data-trim data-noescape>
+							namespace Personnel {
+								export class Employee {
+									constructor(public name: string){
+									}
+								}
+							}
+							let alice = new Personnel.Employee("Alice");
+							console.log(alice.name);    // Alice
+						</code></pre>
+					</section>
+					<section>
+						<h3>Псевдонимы</h3>
+						<pre><code data-trim data-noescape>
+							namespace Data{
+								export namespace Personnel {
+									export class Employee {
+										constructor(public name: string){
+										}
+									}
+								}
+							}
+							import employee = Data.Personnel.Employee;
+							let tom = new employee("Tom")
+							console.log(tom.name);
+						</code></pre>
+						<p><u>employee</u> будет рассматриваться как краткое имя для <u>Data.Personnel.Employee</u>.</p>
+					</section>
+					<section>
+						<h3>Модули</h3>
+						<p>5 различных систем модулей:</p>
+						<ul>
+							<li>AMD (Asynchronys Module Defenition)</li>
+							<li>CommonJS</li>
+							<li>UMD (Universal Module Defenition)</li>
+							<li>System</li>
+							<li>ES 2015</li>
+						</ul>
+					</section>
+					<section>
+						<p>При компиляции из командной строки или терминала для установки модуля необходимо передать соответствующее значение параметру <u>--module</u>:</p>
+						<pre><code data-trim data-noescape>
+							tsc --module commonjs main.ts // для CommonJS
+							tsc --module amd main.ts // для AMD
+							tsc --module umd main.ts // для UMD
+							tsc --module system main.ts // для SytemJS
+						</code></pre>
+					</section>
+					<section>
+						<p>А для загрузки модулей можно выбрать один из следующих загрузчиков:</p>
+						<ul>
+							<li><b>RequireJS:</b> асинхронное определение модуля или asynchronous module definition(AMD)</li>
+							<li><b>Browserify:</b> использует синтаксис CommonJS</li>
+							<li><b>SystemJS:</b> универсальный загрузчик, может применяться для модулей любого типа</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>5.Заголовочные файлы</h2>
+					<p><u>globals.d.ts</u> и который будет иметь следующее содержимое:</p>
+					<pre><code data-trim data-noescape>
+						declare var globalVar: string;
+					</code></pre>
+					</section>
+					<section>
+						<p>Файл <u>app.ts:</u></p>
+						<pre><code data-trim data-noescape>
+							/// < reference path= "globals.d.ts" />
+							class Utility {
+								static displayGlobalVar() {
+									console.log(globalVar);
+								}
+							}
+							window.onload = () => {
+								Utility.displayGlobalVar();
+							};
+						</code></pre>
+					</section>
+					<section>
+						<p>С помощью директивы reference в начале файла подключается заголовочный файл globals.d.ts. С помощью параметра path указывается путь к заголовочному файлу.</p>
+						<p>То есть у нас получится следующая структура проекта:</p>
+						<ul>
+							<li>app.ts</li>
+							<li>globals.d.ts</li>
+							<li>index.html</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Декораторы</h2>
+						<p>Декораторы являются инструментом декларативного программирования, они позволяют добавить к классам и их членам метаданные и тем самым изменить их поведение без изменения их кода.</p>
+						<p>Декораторы представляют функции, которые могут применяться к классам, методам, методом доступа (геттерам и сеттерам), свойствам, параметрам.</p>
+					</section>
+					<section>
+						<p>При компиляции следует указывать параметр <u>experimentalDecorators</u>. Например, через файл <u>tsconfig.json</u>:</p>
+						<pre><code data-trim data-noescape>
+							{
+								"compilerOptions": {
+									"target": "ES5",
+									"experimentalDecorators": true
+								}
+							}
+						</code></pre>
+						<p>Либо через параметры в командной строке:</p>
+						<pre><code data-trim data-noescape>
+							tsc app.ts -t ES5 --experimentalDecorators
+						</code></pre>
+					</section>
+					<section>
+						<h3>Декораторы классов</h3>
+						<p>Декоратор класса представляет функцию, которая принимает один параметр:</p>
+						<pre><code data-trim data-noescape>
+							function classDecoratorFn(constructor: Function){ }
+						</code></pre>
+						<p>В качестве параметра выступает конструктор класса. Например, определим простейший декоратор:</p>
+					</section>
+					<section>
+						<pre><code data-trim data-noescape>
+							function sealed(constructor: Function) {
+								console.log("sealed decorator");
+								Object.seal(constructor);
+								Object.seal(constructor.prototype);
+							}
+							@sealed
+							class User {
+								name: string;
+								constructor(name: string){
+									this.name = name;
+								}
+								print():void{
+									console.log(this.name);
+								}
+							}
+						</code></pre>
+					</section>
+					<section>
+						<p>Декоратор sealed с помощью функции Object.seal запрещает расширение прототипа класса User.</p>
+						<p>Для применения декоратора используется знак @. Сам декоратор ставится перед названием класса. 
+							То есть из-за применения декоратора мы, к примеру, не сможем добавить в класс User новое свойство следующим образом:</p>
+							<pre><code data-trim data-noescape>
+								Object.defineProperty(User, 'age', {
+									value: 17
+								});
+							</code></pre>
+					</section>
+				</section>
+				<section>
+					<p> Официальный сайт языка http://www.typescriptlang.org/</p>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				navigationMode: 'default',
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
